@@ -216,7 +216,7 @@
                             </div>
                             <div class="text-center">
                                 <button type="submit" disabled
-                                    class="bg-pink-400 text-black hover:bg-black hover:text-pink-400 focus:outline-none w-full py-3 rounded-full text-lg focus:text-black transition-all duration-200 px-6">
+                                    class="bg-red-600 text-white hover:bg-red-800 hover:text-white focus:outline-none w-full py-3 rounded-full text-lg focus:text-black transition-all duration-200 px-6">
                                     Checkout Now
                                 </button>
                             </div>
