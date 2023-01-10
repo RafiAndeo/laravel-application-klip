@@ -22,11 +22,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
-
-            $table->string('courier')->nullable();
-
-            $table->string('payment')->default('MIDTRANS');
-            $table->string('payment_url')->nullable();
+            $table->string('desc');
+            $table->string('url')->nullable();
 
             $table->bigInteger('total_price')->default(0);
             $table->string('status')->default('PENDING');
