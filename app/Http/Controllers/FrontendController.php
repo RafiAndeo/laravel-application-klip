@@ -49,7 +49,7 @@ class FrontendController extends Controller
     public function cart(Request $request)
     {
         $carts = Cart::with(['product.galleries'])->where('users_id', Auth::user()->id)->get();
-        
+
         return view('pages.frontend.cart', compact('carts'));
     }
 
@@ -61,58 +61,26 @@ class FrontendController extends Controller
         $carts = Cart::with(['product'])->where('users_id', Auth::user()->id)->get();
 
         // Add to Transaction data
+
+        $data['url'] = $request->file('url')->store('public/transaksi');
         $data['users_id'] = Auth::user()->id;
         $data['total_price'] = $carts->sum('product.price');
-    
+
         // Create Transaction
         $transaction = Transaction::create($data);
 
         // Create Transaction item
-        foreach($carts as $cart) {
+        foreach ($carts as $cart) {
             $items[] = TransactionItem::create([
                 'transactions_id' => $transaction->id,
                 'users_id' => $cart->users_id,
                 'products_id' => $cart->products_id,
             ]);
         }
-        
+
         // Delete cart after transaction
         Cart::where('users_id', Auth::user()->id)->delete();
-
-        // Konfigurasi midtrans
-        Config::$serverKey = config('services.midtrans.serverKey');
-        Config::$isProduction = config('services.midtrans.isProduction');
-        Config::$isSanitized = config('services.midtrans.isSanitized');
-        Config::$is3ds = config('services.midtrans.is3ds');
-
-        // Setup midtrans variable
-        $midtrans = array(
-            'transaction_details' => array(
-                'order_id' =>  'KL-' . $transaction->id,
-                'gross_amount' => (int) $transaction->total_price,
-            ),
-            'customer_details' => array(
-                'first_name'    => $transaction->name,
-                'email'         => $transaction->email
-            ),
-            'enabled_payments' => array('gopay','bank_transfer'),
-            'vtweb' => array()
-        );
-
-        try {
-            // Ambil halaman payment midtrans
-            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-
-            $transaction->payment_url = $paymentUrl;
-            $transaction->save();
-
-            // Redirect ke halaman midtrans
-            return redirect($paymentUrl);
-        }
-        catch (Exception $e) {
-            echo $e->getMessage();
-        }
-
+        return view('pages.frontend.success');
     }
 
     public function success(Request $request)
