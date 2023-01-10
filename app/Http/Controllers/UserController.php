@@ -23,7 +23,7 @@ class UserController extends Controller
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
                     return '
-                        <a class=" bg-black text-white rounded-md px-2 py-1 m-2 " href="' . route('dashboard.user.edit', $item->id) . '">
+                        <a class=" bg-black mr-2 text-white rounded-md px-2 py-1 m-2 " href="' . route('dashboard.user.edit', $item->id) . '">
                             Edit
                         </a>
                         <form class="inline-block" action="' . route('dashboard.user.destroy', $item->id) . '" method="POST">
