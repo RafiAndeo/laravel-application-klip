@@ -16,9 +16,8 @@ class Transaction extends Model
         'email',
         'address',
         'phone',
-        'courier',
-        'payment',
-        'payment_url',
+        'desc',
+        'url',
         'total_price',
         'status'
     ];
